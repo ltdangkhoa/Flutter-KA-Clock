@@ -6,7 +6,7 @@ Take a look at [demo video](https://www.youtube.com/watch?v=J62OhH4i2kg)
 
 ## Quick look
 
-![](ka_clock/ka_clock_gif.gif)
+![](ka_clock_gif.gif)
 
 ## Getting Started
 
