@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/customizer.dart';
 import 'package:flutter_clock_helper/model.dart';
 import 'package:intl/intl.dart';
-import 'package:ka_clock/animated_back.dart';
-import 'package:ka_clock/animated_weather.dart';
+import 'package:ka_clock/background_layer.dart';
 import 'package:ka_clock/draw_around.dart';
 import 'package:ka_clock/flip_digit.dart';
+import 'package:ka_clock/weather_layer.dart';
 
 void main() {
   runApp(ClockCustomizer((ClockModel model) => KAClock(model)));
@@ -48,8 +48,6 @@ class _KAClockState extends State<KAClock> {
   var _temperatureRange = '';
   var _condition = '';
   var _location = '';
-
-  var selected = true;
 
   @override
   void initState() {
@@ -113,22 +111,6 @@ class _KAClockState extends State<KAClock> {
 //      fontFamily: 'Poppins-Regular',
     );
 
-    final backgroundLayer = Theme.of(context).brightness == Brightness.light
-        ? Positioned.fill(child: AnimatedBack())
-        : Container(
-            decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.bottomLeft,
-              end: Alignment.topRight,
-              colors: [
-                Colors.black,
-                Colors.blueGrey.shade700,
-              ],
-            ),
-          ));
-    final weatherLayer = Theme.of(context).brightness == Brightness.light
-        ? Positioned.fill(child: AnimatedWeather(weather: _weather))
-        : Container();
     return Container(
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -141,8 +123,23 @@ class _KAClockState extends State<KAClock> {
               style: defaultStyle,
               child: Stack(
                 children: <Widget>[
-                  backgroundLayer,
-                  weatherLayer,
+                  Positioned.fill(
+                    child: BackgroundLayer(
+                        second: second,
+                        width: _width,
+                        height: _height,
+                        brightness: Theme.of(context).brightness),
+                  ),
+                  Theme.of(context).brightness == Brightness.light
+                      ? Positioned.fill(
+                          child: WeatherLayer(
+                            weather: _weather,
+                            second: second,
+                            width: _width,
+                            height: _height,
+                          ),
+                        )
+                      : Container(),
                   Positioned(
                     bottom: 4.0,
                     left: 4.0,

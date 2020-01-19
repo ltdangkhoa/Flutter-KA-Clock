@@ -1,4 +1,7 @@
+//Deprecated and replaced by weather_layer
+
 import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_clock_helper/model.dart';
 
@@ -36,11 +39,21 @@ class _AnimatedWeatherState extends State<AnimatedWeather>
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _controller.reset();
-        _clouds = getCloudy(300);
-        _rains = getRainy();
-        _snows = getSnowy();
-        _fogs = getFoggy();
-        _flashes = getFlash();
+
+        if (widget.weather == WeatherCondition.rainy) {
+          _rains = getRainy();
+        } else if (widget.weather == WeatherCondition.cloudy) {
+          _clouds = getCloudy(300);
+        } else if (widget.weather == WeatherCondition.foggy) {
+          _fogs = getFoggy();
+        } else if (widget.weather == WeatherCondition.sunny) {
+        } else if (widget.weather == WeatherCondition.snowy) {
+          _snows = getSnowy();
+        } else if (widget.weather == WeatherCondition.thunderstorm) {
+          _flashes = getFlash();
+        } else if (widget.weather == WeatherCondition.windy) {
+          _clouds = getCloudy(300);
+        }
       } else if (status == AnimationStatus.dismissed) {
         _controller.forward();
       }
@@ -411,13 +424,13 @@ class WeatherFoggy extends AnimatedWidget {
 }
 
 class WeatherThunderStorm extends AnimatedWidget {
-  const WeatherThunderStorm(
-      {Key key,
-      AnimationController controller,
-      this.width,
-      this.standCloud,
-      this.items})
-      : super(key: key, listenable: controller);
+  const WeatherThunderStorm({
+    Key key,
+    @required AnimationController controller,
+    this.width,
+    this.standCloud,
+    this.items,
+  }) : super(key: key, listenable: controller);
   final double width;
   final Widget items;
   final Widget standCloud;
